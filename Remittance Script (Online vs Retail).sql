@@ -16,17 +16,6 @@ SELECT
 		PAYMENT_NUMBER = rt.ID_MIND_RECEIPT ) ACCOUNTID,
 	(
 	SELECT
-		a.accountani
-	FROM
-		accounts@minddb aa, ibpay@minddb b, ASANI@minddb a
-	WHERE
-		aa.id = b.accountid
-		AND a.accountid = aa.id
-		AND a.SERVICETYPE = 'MOBILEOUT'
-		AND a.todate > sysdate
-		AND b.PAYMENT_NUMBER = rt.ID_MIND_RECEIPT ) phonnum,
-	(
-	SELECT
 		AMOUNT
 	FROM
 		ibpay@minddb
