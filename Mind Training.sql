@@ -7,6 +7,7 @@ SELECT
 	FROM
 		ACCOUNTS acc
 	WHERE
+	
 		acc.id = actb.PARENT ) ma,
 	actb.code parent,
 	a.code sa,
@@ -199,6 +200,26 @@ INNER JOIN gl_transactions gtx ON
 WHERE
 	a.code = '35043488296';
 	
+	
+---Distributor Wallet Deduction
+SELECT
+	a2.CODE,
+	a2.ACCOUNTNAME name,
+	a.ADJUSTMENTTYPE adjtype,
+	a.ADJUSTAMOUNT  + a.TAXAMOUNT AS amount,
+ 	a.note ,
+	a.INSERTDATETIME adjdate,
+	a.USERNAME
+FROM
+	ADJUSTMENT a
+INNER JOIN accounts a2 ON
+	a.ACCOUNTID = a2.id
+WHERE
+	a.ADJUSTMENTTYPE = 'DTOPUP'
+	AND a.ADJUSTDATE = '07-JAN-21' AND a.NOTE = '135463674'
+ORDER BY
+	a.INSERTDATETIME DESC;
+
 
 --Opt Out DigiLoan
 SELECT
@@ -303,6 +324,31 @@ WHERE
 	A.OWNSTATUS = 'A'
 	AND ap.SUBPRODUCT IN ('DATAPRPLUS', 'PRDATAPLUS')
 	AND a2.EXPIRATIONDATE > sysdate;
+
+	---Recurring Start Date Report
+SELECT
+	(
+	SELECT
+		a2. code
+	FROM
+		accounts a2
+	WHERE
+		a2.id = a.ACCOUNTID) accountcode,
+	(
+	SELECT
+		a3.SHORTDESC
+	FROM
+		ACCOUNTSTATUSTYPE a3
+	WHERE
+		a.OWNSTATUS = a3.CODE ) srvstatus,
+	a.PRODUCTCODE,
+	a.SERVICECODE,
+	a.CREATIONDATE,
+	a.RC_START_DATE
+FROM
+	ACCOUNTSERVICES a
+WHERE
+	a.PRODUCTCODE IN ('DIP', 'DTNTRDM', 'EPLTRDM') AND a.CREATIONDATE >= '18-JAN-21';
 
 
 
@@ -429,3 +475,13 @@ AND VT.RESERVED IN (SELECT CODE FROM ACCOUNTS WHERE PARENT = '4326719');
 
 
 ---Exercise 2.5 - Account Contact Address
+
+
+---Exercise 2.6 - Account Service Goods
+
+---Exercise 2.7 - Account Invoices
+
+
+---Exercise 2.8 - Account Payments and Adjustments
+
+---Exercise 2.9 - Prepaid Usage
